@@ -7,7 +7,7 @@
 
 <body>
   
-  <h1>Ractive examples mix</h1>
+  <h3>Ractive examples mix</h3>
 
   <!--
        1. This is the element we'll render our Ractive to.
@@ -32,8 +32,8 @@
       <label for="show_password">show password</label>
       <input id="password" placeholder="insert password" value="{{password}}" type="{{password_input_type}}">
       <input id="password_repeated" placeholder="repeat password" value="{{password_repeated}}" type="{{password_input_type}}">      
-      {{#if password!=''}}
-        {{#if password!='' && password==password_repeated}}
+      {{#if password||password_repeated}}
+        {{#if password==password_repeated}}
           <span>Password is confirmed</span>
         {{else}}
           <span>Password should be repeated to be confirmed</span>
@@ -103,5 +103,67 @@
       },
     });
   </script>
+  
+  <h3>Vue examples mix</h3>
+  <script src="vue.js"></script>
+  
+  <div id="vue">
+  
+    <p>
+      <input placeholder="insert name" v-model="name">
+      <span>Hello, {{name2}}!</span>
+    </p>
+    
+    <p>
+      <input type="checkbox" id="show_password_vue" v-model="show_password">
+      <label for="show_password_vue">show password</label>
+      <input placeholder="insert password" v-model="password" type="{{password_input_type}}">
+      <input placeholder="repeat password" v-model="password_repeated" type="{{password_input_type}}">      
+      <template v-if="password||password_repeated">
+        <template v-if="password==password_repeated">
+          <span>Password is confirmed</span>
+        </template>
+        <template v-else>
+          <span>Password should be repeated to be confirmed</span>
+        </template>
+      </template>
+    </p>
+    
+    <p>
+      <span>Select a part of this planet:</span>
+      <select v-model="selected_group">
+        <option v-for="group in ['mineral', 'vegetal', 'animal']" 
+        value="{{ group }}">{{ group }}</option>
+      </select>
+      
+      <select v-model="selected_entity">
+      <option v-for="entity in entities"
+        value="{{ entity }}">{{entity}}</option>
+      </select>
+      <span v-if="selected_entity">Our beloved planet has {{selected_entity}}s.</span>
+    </p>
+  </div>
+
+  <script>
+  var vue = new Vue({
+  el: '#vue',
+  data: {
+    name: '',
+  },
+  computed: {
+    name2: function () { return this.name!==''?this.name:"world" },
+    password_input_type: function(){ return this.show_password?'text':'password' },
+    entities: function(){
+      var groups={
+        'mineral': ['emerald', 'quartz', 'lavic rock'],
+        'vegetal': ['grass blade', 'bush', 'tree'],
+        'animal': ['human', 'cat', 'dog', 'ant'],
+      };
+      return groups[this.selected_group]
+    },
+  }
+  })
+  </script>
+  
 </body>
 </html>
