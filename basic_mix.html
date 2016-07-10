@@ -44,17 +44,21 @@
     <p>
       <span>Select a part of this planet:</span>
       <select value='{{ selected_group }}'>
+        <option selected>select...</option>
         {{#each ['mineral', 'vegetal', 'animal']}}
           <option>{{this}}</option>
         {{/each}}
       </select>
       
       <select value='{{ selected_entity }}'>
+        <option selected>select...</option>
         {{#each entities}}
           <option>{{this}}</option>
         {{/each}}
       </select>
-      <span>Our beloved planet has {{selected_entity}}s.</span>
+      {{#if selected_entity!=='select...'}}
+        <span>Our beloved planet has {{selected_entity}}s.</span>
+      {{/if}}
     </p>
     
   </script>
@@ -131,16 +135,20 @@
     
     <p>
       <span>Select a part of this planet:</span>
-      <select v-model="selected_group">
+      <select v-model="selected_group" v-on:change="selected_entity='select...'">
+        <option selected>select...</option>
         <option v-for="group in ['mineral', 'vegetal', 'animal']" 
         value="{{ group }}">{{ group }}</option>
       </select>
       
       <select v-model="selected_entity">
+      <option selected>select...</option>
       <option v-for="entity in entities"
         value="{{ entity }}">{{entity}}</option>
       </select>
-      <span v-if="selected_entity">Our beloved planet has {{selected_entity}}s.</span>
+      <span v-if="selected_entity!='select...'">
+        Our beloved planet has {{selected_entity}}s.
+      </span>
     </p>
   </div>
 
