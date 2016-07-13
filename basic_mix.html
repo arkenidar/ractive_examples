@@ -115,14 +115,14 @@
   
     <p>
       <input placeholder="insert name" v-model="name">
-      <span>Hello, {{name2}}!</span>
+      <span v-html="hello_message"></span>
     </p>
     
     <p>
       <input type="checkbox" id="show_password_vue" v-model="show_password">
       <label for="show_password_vue">show password</label>
-      <input placeholder="insert password" v-model="password" type="{{password_input_type}}">
-      <input placeholder="repeat password" v-model="password_repeated" type="{{password_input_type}}">      
+      <input placeholder="insert password" v-model="password" v-bind:type="password_input_type">
+      <input placeholder="repeat password" v-model="password_repeated" v-bind:type="password_input_type">      
       <template v-if="password||password_repeated">
         <template v-if="password==password_repeated">
           <span>Password is confirmed</span>
@@ -136,19 +136,17 @@
     <p>
       <span>Select a part of this planet:</span>
       <select v-model="selected_group" v-on:change="selected_entity='select...'">
-        <option selected>select...</option>
-        <option v-for="group in ['mineral', 'vegetal', 'animal']" 
-        value="{{ group }}">{{ group }}</option>
+        <option>select...</option>
+        <option v-for="group in groups" 
+        v-bind:value="group" v-html="group"></option>
       </select>
       
       <select v-model="selected_entity">
-      <option selected>select...</option>
+      <option>select...</option>
       <option v-for="entity in entities"
-        value="{{ entity }}">{{entity}}</option>
+        v-bind:value="entity" v-html="entity"></option>
       </select>
-      <span v-if="selected_entity!='select...'">
-        Our beloved planet has {{selected_entity}}s.
-      </span>
+      <span v-if="selected_entity!='select...'" v-html="entity_message"></span>
     </p>
   </div>
 
@@ -157,9 +155,18 @@
   el: '#vue',
   data: {
     name: '',
+    show_password: false,
+    password: '',
+    password_repeated: '',
+    groups: ['mineral', 'vegetal', 'animal'],
+    selected_group: 'select...',
+    selected_entity: 'select...',
   },
   computed: {
-    name2: function () { return this.name!==''?this.name:"world" },
+    hello_message: function(){
+      var name2 = this.name!==''?this.name:"world";
+      return "Hello, "+name2+"!";
+    },
     password_input_type: function(){ return this.show_password?'text':'password' },
     entities: function(){
       var groups={
@@ -168,6 +175,9 @@
         'animal': ['human', 'cat', 'dog', 'ant'],
       };
       return groups[this.selected_group]
+    },
+    entity_message: function(){
+      return "Our beloved planet has "+this.selected_entity+"s.";
     },
   }
   })
