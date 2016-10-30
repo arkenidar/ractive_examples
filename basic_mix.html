@@ -111,15 +111,31 @@
   <h3>Vue examples mix</h3>
   <script src="vue.js"></script>
   
-  <div id="vue1">
+  <div id="vue_hello">
   
     <p>
       <input placeholder="insert name" v-model="name">
       <span v-html="hello_message"></span>
     </p>
   </div>
+
+  <script>
+  var vue = new Vue({
+  el: '#vue_hello',
+  data: {
+    name: '',
+  },
+  computed: {
+    hello_message: function(){
+      var name2 = this.name!==''?this.name:"world";
+      return "Hello, "+name2+"!";
+    },
+  }
+  })
+  </script>
+
   
-  <div id="vue2">
+  <div id="vue_password">
     <p>
       <input type="checkbox" id="show_password_vue" v-model="show_password">
       <label for="show_password_vue">show password</label>
@@ -136,7 +152,21 @@
     </p>
   </div>
   
-  <div id="vue3">
+  <script>
+  var vue = new Vue({
+  el: '#vue_password',
+  data: {
+    show_password: false,
+    password: '',
+    password_repeated: '',
+  },
+  computed: {
+    password_input_type: function(){ return this.show_password?'text':'password' },
+  }
+  })
+  </script>
+  
+  <div id="vue_select">
       
     <p>
       <span>Select a part of this planet:</span>
@@ -157,36 +187,7 @@
 
   <script>
   var vue = new Vue({
-  el: '#vue1',
-  data: {
-    name: '',
-  },
-  computed: {
-    hello_message: function(){
-      var name2 = this.name!==''?this.name:"world";
-      return "Hello, "+name2+"!";
-    },
-  }
-  })
-  </script>
-
-  <script>
-  var vue = new Vue({
-  el: '#vue2',
-  data: {
-    show_password: false,
-    password: '',
-    password_repeated: '',
-  },
-  computed: {
-    password_input_type: function(){ return this.show_password?'text':'password' },
-  }
-  })
-  </script>
-  
-  <script>
-  var vue = new Vue({
-  el: '#vue3',
+  el: '#vue_select',
   data: {
     groups: ['mineral', 'vegetal', 'animal'],
     selected_group: 'select...',
