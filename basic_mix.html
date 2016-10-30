@@ -111,13 +111,15 @@
   <h3>Vue examples mix</h3>
   <script src="vue.js"></script>
   
-  <div id="vue">
+  <div id="vue1">
   
     <p>
       <input placeholder="insert name" v-model="name">
       <span v-html="hello_message"></span>
     </p>
-    
+  </div>
+  
+  <div id="vue2">
     <p>
       <input type="checkbox" id="show_password_vue" v-model="show_password">
       <label for="show_password_vue">show password</label>
@@ -132,7 +134,10 @@
         </template>
       </template>
     </p>
-    
+  </div>
+  
+  <div id="vue3">
+      
     <p>
       <span>Select a part of this planet:</span>
       <select v-model="selected_group" v-on:change="selected_entity='select...'">
@@ -152,22 +157,42 @@
 
   <script>
   var vue = new Vue({
-  el: '#vue',
+  el: '#vue1',
   data: {
     name: '',
-    show_password: false,
-    password: '',
-    password_repeated: '',
-    groups: ['mineral', 'vegetal', 'animal'],
-    selected_group: 'select...',
-    selected_entity: 'select...',
   },
   computed: {
     hello_message: function(){
       var name2 = this.name!==''?this.name:"world";
       return "Hello, "+name2+"!";
     },
+  }
+  })
+  </script>
+
+  <script>
+  var vue = new Vue({
+  el: '#vue2',
+  data: {
+    show_password: false,
+    password: '',
+    password_repeated: '',
+  },
+  computed: {
     password_input_type: function(){ return this.show_password?'text':'password' },
+  }
+  })
+  </script>
+  
+  <script>
+  var vue = new Vue({
+  el: '#vue3',
+  data: {
+    groups: ['mineral', 'vegetal', 'animal'],
+    selected_group: 'select...',
+    selected_entity: 'select...',
+  },
+  computed: {
     entities: function(){
       var groups={
         'mineral': ['emerald', 'quartz', 'lavic rock'],
