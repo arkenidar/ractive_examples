@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+  <meta charset='utf-8'>
+  <title>VueJS examples</title>
+</head>
+<body>
+<script src="vue.js"></script>
+
+<div id="vue_select">
+<p>
+<span>Select a part of this planet:</span>
+<select v-model="selected_group" v-on:change="selected_entity='select...'">
+<option>select...</option>
+<option v-for="group in groups" 
+v-bind:value="group" v-html="group"></option>
+</select>
+
+<select v-model="selected_entity">
+<option>select...</option>
+<option v-for="entity in entities"
+v-bind:value="entity" v-html="entity"></option>
+</select>
+<span v-if="selected_entity!='select...'" v-html="entity_message"></span>
+</p>
+</div>
+
+<script>
+var vue = new Vue({
+el: '#vue_select',
+data: {
+groups: ['mineral', 'vegetal', 'animal'],
+selected_group: 'select...',
+selected_entity: 'select...',
+},
+computed: {
+entities: function(){
+var groups={
+'mineral': ['emerald', 'quartz', 'lavic rock'],
+'vegetal': ['grass blade', 'bush', 'tree'],
+'animal': ['human', 'cat', 'dog', 'ant'],
+};
+return groups[this.selected_group]
+},
+entity_message: function(){
+return "Our beloved planet has "+this.selected_entity+"s.";
+},
+}
+})
+</script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+  <meta charset='utf-8'>
+  <title>VueJS examples</title>
+</head>
+<body>
+<script src="vue.js"></script>
+
+<div id="vue_hello">
+<p>
+<input placeholder="insert name" v-model="name">
+<span v-html="hello_message"></span>
+</p>
+</div>
+
+<script>
+var vue = new Vue({
+el: '#vue_hello',
+data: {
+name: '',
+},
+computed: {
+hello_message: function(){
+var name2 = this.name!==''?this.name:"world";
+return "Hello, "+name2+"!";
+},
+}
+})
+</script>
+
+</body>
+</html>
