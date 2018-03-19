@@ -1,16 +1,30 @@
 <!doctype html>
+<meta charset="UTF-8">
 
 <div id="target"></div>
 
 <script id="template" type="text/ractive">
 
   <form onsubmit="add(); return false;">
-    <input value='{{item}}' autofocus> <button type="submit">ok</button>
+    <input value='{{item}}' autofocus> <button type="submit">add</button>
   </form>
 
   <ul>
-    {{#each todos}}
-     <li>{{this}}</li>
+    {{#each todos: index}}
+     <li>
+       {{#if editing!=index}}
+        {{this}}
+        <button data-index="{{index}}" onclick="remove(this)">remove</button>
+        <button data-index="{{index}}" onclick="edit(this)">edit</button>
+        <button data-index="{{index}}" onclick="up(this)">up</button>
+        <button data-index="{{index}}" onclick="down(this)">down</button>
+       {{else}}
+        <form onsubmit="save(this); return false;" data-index="{{index}}">
+         <input value="{{item_edit}}" id="item_edit">
+         <button type="submit">save</button>
+        </form>
+       {{/if}}
+      </li>
     {{/each}}
   </ul>
 
@@ -27,16 +41,65 @@ var ractive = new Ractive({
 
   data: {
 
-    todos: ['1','2'],
+    todos: ['1','2', '3'],
+
+    editing: -1,
 
   },
 
 })
 
 function add(){
+  var item = ractive.get('item')
+  if(item.trim()=='') return
   var todos = ractive.get('todos')
-  todos.push(ractive.get('item'))
+  todos.push(item)
   ractive.set('todos', todos)
   ractive.set('item', '')
 }
+
+function remove(item){
+  var todos = ractive.get('todos')
+  todos.splice(parseInt(item.dataset.index), 1)
+  ractive.set('todos', todos)
+}
+
+function edit(item){
+  var index = parseInt(item.dataset.index)
+  ractive.set('item_edit', ractive.get('todos')[index])
+  ractive.set('editing', index)
+  document.getElementById('item_edit').focus()
+}
+
+function save(item){
+  var item_edit = ractive.get('item_edit')
+  if(item_edit.trim()=='') return
+  var index = parseInt(item.dataset.index)
+  var todos = ractive.get('todos')
+  todos[index] = item_edit
+  ractive.set('todos', todos)
+  ractive.set('editing', -1)
+}
+
+function swap(array, index_a, index_b){
+  var temp = array[index_a]
+  array[index_a] = array[index_b]
+  array[index_b] = temp
+  return array
+}
+
+function up(item){
+  var todos = ractive.get('todos')
+  var index = parseInt(item.dataset.index)
+  if(index<=0) return
+  ractive.set('todos', swap(todos, index, index-1))
+}
+
+function down(item){
+  var todos = ractive.get('todos')
+  var index = parseInt(item.dataset.index)
+  if(index>=(todos.length-1)) return
+  ractive.set('todos', swap(todos, index, index+1))
+}
+
 </script>
