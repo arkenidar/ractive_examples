@@ -1,0 +1,42 @@
+<!doctype html>
+
+<div id="target"></div>
+
+<script id="template" type="text/ractive">
+
+  <form onsubmit="add(); return false;">
+    <input value='{{item}}' autofocus> <button type="submit">ok</button>
+  </form>
+
+  <ul>
+    {{#each todos}}
+     <li>{{this}}</li>
+    {{/each}}
+  </ul>
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/ractive"></script>
+
+<script>
+var ractive = new Ractive({
+
+  target: '#target',
+
+  template: '#template',
+
+  data: {
+
+    todos: ['1','2'],
+
+  },
+
+})
+
+function add(){
+  var todos = ractive.get('todos')
+  todos.push(ractive.get('item'))
+  ractive.set('todos', todos)
+  ractive.set('item', '')
+}
+</script>
