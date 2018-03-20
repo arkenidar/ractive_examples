@@ -20,19 +20,21 @@
 <script id='template' type='text/ractive'>  
   <p>
     <span>Select a part of this planet:</span>
+    <br>
     <select value='{{ selected_group }}'>
       <option selected>select...</option>
       {{#each ['mineral', 'vegetal', 'animal']}}
         <option>{{this}}</option>
       {{/each}}
     </select>
-    
+    <br>
     <select value='{{ selected_entity }}'>
       <option selected>select...</option>
       {{#each entities}}
         <option>{{this}}</option>
       {{/each}}
     </select>
+    <br>
     {{#if selected_entity!=='select...'}}
       <span>Our beloved planet has {{selected_entity}}s.</span>
     {{/if}}

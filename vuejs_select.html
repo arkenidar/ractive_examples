@@ -11,17 +11,19 @@
 <div id="vue_select">
 <p>
 <span>Select a part of this planet:</span>
+<br>
 <select v-model="selected_group" v-on:change="selected_entity='select...'">
 <option>select...</option>
 <option v-for="group in groups" 
 v-bind:value="group" v-html="group"></option>
 </select>
-
+<br>
 <select v-model="selected_entity">
 <option>select...</option>
 <option v-for="entity in entities"
 v-bind:value="entity" v-html="entity"></option>
 </select>
+<br>
 <span v-if="selected_entity!='select...'" v-html="entity_message"></span>
 </p>
 </div>
