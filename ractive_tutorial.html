@@ -22,7 +22,7 @@
           {{/if}}
         {{else}}
           <form onsubmit="save({{index}}); return false;">
-          <input value="{{item_edit}}" id="item_edit" autofocus autocomplete="off">
+          <input value="{{item_edit}}" id="item_edit" autocomplete="off">
           <button type="submit">save</button>
           <button type="button" onclick="remove({{index}})">remove</button>
           </form>
@@ -31,7 +31,7 @@
       {{/each}}
       <li>
         <form onsubmit="add(); return false;">
-          <input value='{{item}}' id="item_add" autofocus autocomplete="off"> <button type="submit">add</button>
+          <input value='{{item}}' id="item_add" autocomplete="off"> <button type="submit">add</button>
         </form>
       </li>
     </ul>
@@ -80,13 +80,11 @@ function remove(item){
   var todos = ractive.get('todos')
   todos.splice(item, 1)
   ractive.set('todos', todos)
-  document.getElementById('item_add').focus()
 }
 
 function edit(index){
   ractive.set('item_edit', ractive.get('todos')[index])
   ractive.set('editing', index)
-  document.getElementById('item_edit').focus()
 }
 
 function save(index){
@@ -99,7 +97,6 @@ function save(index){
   var todos = ractive.get('todos')
   todos[index] = item_edit
   ractive.set('todos', todos)
-  document.getElementById('item_add').focus()
 }
 
 function swap(array, index_a, index_b){
@@ -113,27 +110,21 @@ function up(index){
   var todos = ractive.get('todos')
   if(index<=0) return
   ractive.set('todos', swap(todos, index, index-1))
-  document.getElementById('item_add').focus()
 }
 
 function down(index){
   var todos = ractive.get('todos')
   if(index>=(todos.length-1)) return
   ractive.set('todos', swap(todos, index, index+1))
-  document.getElementById('item_add').focus()
 }
 
 function toggle_edit_mode(){
   ractive.set('reorder_mode', false)
   ractive.set('edit_mode', !ractive.get('edit_mode'))
-  if(ractive.get('edit_mode')){
-    document.getElementById('item_add').focus()
-  }
 }
 
 function toggle_reorder_mode(){
   ractive.set('reorder_mode', !ractive.get('reorder_mode'))
-  document.getElementById('item_add').focus()
 }
 
 </script>
