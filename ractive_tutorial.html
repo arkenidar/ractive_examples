@@ -1,33 +1,48 @@
 <!doctype html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>to-do list</title>
 
 <div id="target"></div>
 
 <script id="template" type="text/ractive">
-
-  <form onsubmit="add(); return false;">
-    <input value='{{item}}' autofocus> <button type="submit">add</button>
-  </form>
-
-  <ul>
-    {{#each todos: index}}
-     <li>
-       {{#if editing!=index}}
-        {{this}}
-        <button data-index="{{index}}" onclick="remove(this)">remove</button>
-        <button data-index="{{index}}" onclick="edit(this)">edit</button>
-        <button data-index="{{index}}" onclick="up(this)">up</button>
-        <button data-index="{{index}}" onclick="down(this)">down</button>
-       {{else}}
-        <form onsubmit="save(this); return false;" data-index="{{index}}">
-         <input value="{{item_edit}}" id="item_edit">
-         <button type="submit">save</button>
+  <h3>to-do list</h3>
+  <button onclick="toggle_edit_mode()">toggle edit-mode</button>
+  {{#if edit_mode==true}}
+    <ul>
+      {{#each todos: index}}
+      <li>
+        {{#if editing!=index}}
+          {{#if reorder_mode}}
+            <button onclick="up({{index}})">up</button>
+            <button onclick="down({{index}})">down</button>
+            {{this}}
+          {{else}}
+            <button onclick="edit({{index}})">{{this}}</button>
+          {{/if}}
+        {{else}}
+          <form onsubmit="save({{index}}); return false;">
+          <input value="{{item_edit}}" id="item_edit" autofocus autocomplete="off">
+          <button type="submit">save</button>
+          <button type="button" onclick="remove({{index}})">remove</button>
+          </form>
+        {{/if}}
+        </li>
+      {{/each}}
+      <li>
+        <form onsubmit="add(); return false;">
+          <input value='{{item}}' id="item_add" autofocus autocomplete="off"> <button type="submit">add</button>
         </form>
-       {{/if}}
       </li>
-    {{/each}}
-  </ul>
+    </ul>
+    <button onclick="toggle_reorder_mode()">toggle reorder-mode</button>
+  {{else}}
+    <ul>
+      {{#each todos}}
+        <li>{{this}}</li>
+      {{/each}}
+    </ul>
+  {{/if}}
 
 </script>
 
@@ -42,10 +57,11 @@ var ractive = new Ractive({
 
   data: {
 
-    todos: ['1','2', '3'],
+    todos: ['gym ...','games ...', 'walk ...', 'talk ...', 'visit ...', 'check ...'],
 
     editing: -1,
-
+    edit_mode: false,
+    reorder_mode: false,
   },
 
 })
@@ -60,26 +76,30 @@ function add(){
 }
 
 function remove(item){
+  ractive.set('editing', -1)
   var todos = ractive.get('todos')
-  todos.splice(parseInt(item.dataset.index), 1)
+  todos.splice(item, 1)
   ractive.set('todos', todos)
+  document.getElementById('item_add').focus()
 }
 
-function edit(item){
-  var index = parseInt(item.dataset.index)
+function edit(index){
   ractive.set('item_edit', ractive.get('todos')[index])
   ractive.set('editing', index)
   document.getElementById('item_edit').focus()
 }
 
-function save(item){
+function save(index){
+  ractive.set('editing', -1)
   var item_edit = ractive.get('item_edit')
-  if(item_edit.trim()=='') return
-  var index = parseInt(item.dataset.index)
+  if(item_edit.trim()==''){
+    remove(index)
+    return
+  }
   var todos = ractive.get('todos')
   todos[index] = item_edit
   ractive.set('todos', todos)
-  ractive.set('editing', -1)
+  document.getElementById('item_add').focus()
 }
 
 function swap(array, index_a, index_b){
@@ -89,18 +109,31 @@ function swap(array, index_a, index_b){
   return array
 }
 
-function up(item){
+function up(index){
   var todos = ractive.get('todos')
-  var index = parseInt(item.dataset.index)
   if(index<=0) return
   ractive.set('todos', swap(todos, index, index-1))
+  document.getElementById('item_add').focus()
 }
 
-function down(item){
+function down(index){
   var todos = ractive.get('todos')
-  var index = parseInt(item.dataset.index)
   if(index>=(todos.length-1)) return
   ractive.set('todos', swap(todos, index, index+1))
+  document.getElementById('item_add').focus()
+}
+
+function toggle_edit_mode(){
+  ractive.set('reorder_mode', false)
+  ractive.set('edit_mode', !ractive.get('edit_mode'))
+  if(ractive.get('edit_mode')){
+    document.getElementById('item_add').focus()
+  }
+}
+
+function toggle_reorder_mode(){
+  ractive.set('reorder_mode', !ractive.get('reorder_mode'))
+  document.getElementById('item_add').focus()
 }
 
 </script>
