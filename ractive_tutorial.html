@@ -58,7 +58,7 @@ var ractive = new Ractive({
 
   data: {
 
-    todos: localStorage.todos=='' ? [] : JSON.parse(localStorage.todos),
+    todos: localStorage.todos ? JSON.parse(localStorage.todos) : [],
 
     editing: -1,
     edit_mode: true,
