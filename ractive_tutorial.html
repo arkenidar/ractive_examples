@@ -7,47 +7,45 @@
 <div id="target"></div>
 
 <script id="template" type="text/ractive">
-  <h3>to-do list</h3>
-  <button onclick="toggle_edit_mode()">toggle edit-mode</button>
-  {{#if edit_mode==true}}
-    <ul>
-      {{#each todos: index}}
+<h3>to-do list</h3>
+<button onclick="toggle_edit_mode()">toggle edit-mode</button>
+{{#if edit_mode==false}}
+  <ul>
+    {{#each todos}}
+      <li>{{this}}</li>
+    {{/each}}
+  </ul>
+{{else}}
+  <ul>
+    {{#each todos: index}}
       <li>
         {{#if editing!=index}}
-          {{#if reorder_mode}}
+          {{#if reorder_mode==false}}
+            <button onclick="edit({{index}})">{{this}}</button>
+          {{else}}
             <button onclick="up({{index}})">up</button>
             <button onclick="down({{index}})">down</button>
             {{this}}
-          {{else}}
-            <button onclick="edit({{index}})">{{this}}</button>
           {{/if}}
         {{else}}
-          <form onsubmit="save({{index}}); return false;">
-          
-          <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item">
+          <form onsubmit="save({{index}}); return false;">    
+            <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item">
           </form>
         {{/if}}
-        </li>
-      {{/each}}
-      {{#if editing==-1 && reorder_mode==false}}
-        <li>
-          <form onsubmit="add(); return false;">
-            <input value='{{item}}' id="item_add" autocomplete="off" placeholder="add item">
-          </form>
-        </li>
-      {{/if}}
-    </ul>
-    {{#if todos.length>1}}
-      <button onclick="toggle_reorder_mode()">toggle reorder-mode</button>
+      </li>
+    {{/each}}
+    {{#if editing==-1 && reorder_mode==false}}
+      <li>
+        <form onsubmit="add(); return false;">
+          <input value='{{item}}' id="item_add" autocomplete="off" placeholder="add item">
+        </form>
+      </li>
     {{/if}}
-  {{else}}
-    <ul>
-      {{#each todos}}
-        <li>{{this}}</li>
-      {{/each}}
-    </ul>
+  </ul>
+  {{#if todos.length>1}}
+    <button onclick="toggle_reorder_mode()">toggle reorder-mode</button>
   {{/if}}
-
+{{/if}}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/ractive"></script>
