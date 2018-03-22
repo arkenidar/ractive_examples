@@ -8,7 +8,7 @@
 <div id="target"></div>
 
 <script id="template" type="text/ractive">
-<b>to-do list</b>
+<h3>to-do list</h3>
 {{#if edit_mode==false}}
   <ul>
     {{#each todos}}
@@ -28,14 +28,14 @@
       {{/if}}
     {{else}}
       <form onsubmit="save({{index}}); return false;">    
-        <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item">
+        <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item" class="form-control">
       </form>
     {{/if}}
   </div>
   {{/each}}
   {{#if editing==-1 && reorder_mode==false}}
     <form onsubmit="add(); return false;">
-      <input value='{{item}}' id="item_add" autocomplete="off" placeholder="add item">
+      <input value='{{item}}' id="item_add" autocomplete="off" placeholder="add item" class="form-control">
     </form>
   {{/if}}
   {{#if todos.length>1}}
