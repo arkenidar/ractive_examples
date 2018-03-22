@@ -39,7 +39,9 @@
         </li>
       {{/if}}
     </ul>
-    <button onclick="toggle_reorder_mode()">toggle reorder-mode</button>
+    {{#if todos.length>1}}
+      <button onclick="toggle_reorder_mode()">toggle reorder-mode</button>
+    {{/if}}
   {{else}}
     <ul>
       {{#each todos}}
