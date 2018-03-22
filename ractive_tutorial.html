@@ -92,6 +92,7 @@ function remove(item){
 function edit(index){
   ractive.set('item_edit', ractive.get('todos')[index])
   ractive.set('editing', index)
+  document.querySelector('#item_edit').focus()
 }
 
 function save(index){
