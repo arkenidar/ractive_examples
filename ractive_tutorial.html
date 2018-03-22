@@ -23,16 +23,17 @@
           {{/if}}
         {{else}}
           <form onsubmit="save({{index}}); return false;">
-          <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item">
           <button type="submit">save</button>
           <button type="button" onclick="remove({{index}})">remove</button>
+          <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item">
           </form>
         {{/if}}
         </li>
       {{/each}}
       <li>
         <form onsubmit="add(); return false;">
-          <input value='{{item}}' id="item_add" autocomplete="off" placeholder="item"> <button type="submit">add</button>
+          <button type="submit">add</button>
+          <input value='{{item}}' id="item_add" autocomplete="off" placeholder="item">
         </form>
       </li>
     </ul>
