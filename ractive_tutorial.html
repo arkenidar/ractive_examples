@@ -131,6 +131,7 @@ function toggle_edit_mode(){
 }
 
 function toggle_reorder_mode(){
+  ractive.set('editing', -1)
   ractive.set('reorder_mode', !ractive.get('reorder_mode'))
 }
 
