@@ -6,7 +6,7 @@
 <div id="target"></div>
 
 <script id="template" type="text/ractive">
-<b>to-do list</b>
+<b>list</b>
 {{#if edit_mode==false}}
   <ul>
     {{#each todos}}
@@ -37,10 +37,10 @@
     </form>
   {{/if}}
   {{#if todos.length>1}}
-    <div><button onclick="toggle_reorder_mode()">{{#if reorder_mode}}✔{{/if}} reorder</button></div>
+    <div><button onclick="toggle_reorder_mode()">{{#if reorder_mode}}back{{else}}reorder{{/if}}</button></div>
   {{/if}}
 {{/if}}
-{{#if !reorder_mode}}<div><button onclick="toggle_edit_mode()">{{#if edit_mode}}✔{{/if}} edit</button></div>{{/if}}
+{{#if !reorder_mode}}<div><button onclick="toggle_edit_mode()">{{#if edit_mode}}back{{else}}edit{{/if}}</button></div>{{/if}}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/ractive"></script>
