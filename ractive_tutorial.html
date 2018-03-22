@@ -30,12 +30,14 @@
         {{/if}}
         </li>
       {{/each}}
-      <li>
-        <form onsubmit="add(); return false;">
-          <button type="submit">add</button>
-          <input value='{{item}}' id="item_add" autocomplete="off" placeholder="item">
-        </form>
-      </li>
+      {{#if editing==-1 && reorder_mode==false}}
+        <li>
+          <form onsubmit="add(); return false;">
+            <button type="submit">add</button>
+            <input value='{{item}}' id="item_add" autocomplete="off" placeholder="item">
+          </form>
+        </li>
+      {{/if}}
     </ul>
     <button onclick="toggle_reorder_mode()">toggle reorder-mode</button>
   {{else}}
