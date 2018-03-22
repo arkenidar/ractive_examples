@@ -1,14 +1,13 @@
 <!doctype html>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=2">
 <title>to-do list</title>
 <link rel="manifest" href="todo_app_manifest.json">
 
 <div id="target"></div>
 
 <script id="template" type="text/ractive">
-<h3>to-do list</h3>
-<button onclick="toggle_edit_mode()">toggle edit-mode</button>
+<b>to-do list</b>
 {{#if edit_mode==false}}
   <ul>
     {{#each todos}}
@@ -16,36 +15,33 @@
     {{/each}}
   </ul>
 {{else}}
-  <ul>
-    {{#each todos: index}}
-      <li>
-        {{#if editing!=index}}
-          {{#if reorder_mode==false}}
-            <button onclick="edit({{index}})">{{this}}</button>
-          {{else}}
-            <button onclick="up({{index}})">up</button>
-            <button onclick="down({{index}})">down</button>
-            {{this}}
-          {{/if}}
-        {{else}}
-          <form onsubmit="save({{index}}); return false;">    
-            <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item">
-          </form>
-        {{/if}}
-      </li>
-    {{/each}}
-    {{#if editing==-1 && reorder_mode==false}}
-      <li>
-        <form onsubmit="add(); return false;">
-          <input value='{{item}}' id="item_add" autocomplete="off" placeholder="add item">
-        </form>
-      </li>
+  {{#each todos: index}}
+  <div>
+    {{#if editing!=index}}
+      {{#if reorder_mode==false}}
+        <button onclick="edit({{index}})">{{this}}</button>
+      {{else}}
+        <button onclick="up({{index}})">up</button>
+        <button onclick="down({{index}})">down</button>
+        {{this}}
+      {{/if}}
+    {{else}}
+      <form onsubmit="save({{index}}); return false;">    
+        <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item">
+      </form>
     {{/if}}
-  </ul>
+  </div>
+  {{/each}}
+  {{#if editing==-1 && reorder_mode==false}}
+    <form onsubmit="add(); return false;">
+      <input value='{{item}}' id="item_add" autocomplete="off" placeholder="add item">
+    </form>
+  {{/if}}
   {{#if todos.length>1}}
-    <button onclick="toggle_reorder_mode()">toggle reorder-mode</button>
+    <div><button onclick="toggle_reorder_mode()">toggle reorder-mode</button></div>
   {{/if}}
 {{/if}}
+<div><button onclick="toggle_edit_mode()">toggle edit-mode</button></div>
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/ractive"></script>
