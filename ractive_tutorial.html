@@ -37,10 +37,10 @@
     </form>
   {{/if}}
   {{#if todos.length>1}}
-    <div><button onclick="toggle_reorder_mode()">toggle reorder-mode</button></div>
+    <div><button onclick="toggle_reorder_mode()">{{#if reorder_mode}}✔{{/if}} reorder</button></div>
   {{/if}}
 {{/if}}
-<div><button onclick="toggle_edit_mode()">toggle edit-mode</button></div>
+{{#if !reorder_mode}}<div><button onclick="toggle_edit_mode()">{{#if edit_mode}}✔{{/if}} edit</button></div>{{/if}}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/ractive"></script>
