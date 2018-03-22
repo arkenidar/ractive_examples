@@ -2,13 +2,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=2">
 <title>to-do list</title>
-<link rel="manifest" href="todo_app_manifest.json">
-<link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <div id="target"></div>
 
 <script id="template" type="text/ractive">
-<h3>to-do list</h3>
+<b>to-do list</b>
 {{#if edit_mode==false}}
   <ul>
     {{#each todos}}
@@ -20,29 +18,29 @@
   <div>
     {{#if editing!=index}}
       {{#if reorder_mode==false}}
-        <button onclick="edit({{index}})" class="btn btn-primary">{{this}}</button>
+        <button onclick="edit({{index}})">{{this}}</button>
       {{else}}
-        <button onclick="up({{index}})" class="btn btn-secondary">▲</button>
-        <button onclick="down({{index}})" class="btn btn-secondary">▼</button>
+        <button onclick="up({{index}})">▲</button>
+        <button onclick="down({{index}})">▼</button>
         {{this}}
       {{/if}}
     {{else}}
       <form onsubmit="save({{index}}); return false;">    
-        <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item" class="form-control">
+        <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item">
       </form>
     {{/if}}
   </div>
   {{/each}}
   {{#if editing==-1 && reorder_mode==false}}
     <form onsubmit="add(); return false;">
-      <input value='{{item}}' id="item_add" autocomplete="off" placeholder="add item" class="form-control">
+      <input value='{{item}}' id="item_add" autocomplete="off" placeholder="add item">
     </form>
   {{/if}}
   {{#if todos.length>1}}
-    <div><button onclick="toggle_reorder_mode()" class="btn btn-secondary">toggle reorder-mode</button></div>
+    <div><button onclick="toggle_reorder_mode()">toggle reorder-mode</button></div>
   {{/if}}
 {{/if}}
-<div><button onclick="toggle_edit_mode()" class="btn btn-secondary">toggle edit-mode</button></div>
+<div><button onclick="toggle_edit_mode()">toggle edit-mode</button></div>
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/ractive"></script>
