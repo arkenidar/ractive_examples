@@ -49,6 +49,7 @@
 <script src="https://cdn.jsdelivr.net/npm/ractive"></script>
 
 <script>
+
 var ractive = new Ractive({
 
   target: '#target',
@@ -57,7 +58,7 @@ var ractive = new Ractive({
 
   data: {
 
-    todos: ['gym ...','games ...', 'walk ...', 'talk ...', 'visit ...', 'check ...'],
+    todos: localStorage.todos=='' ? [] : JSON.parse(localStorage.todos),
 
     editing: -1,
     edit_mode: true,
@@ -72,6 +73,7 @@ function add(){
   var todos = ractive.get('todos')
   todos.push(item)
   ractive.set('todos', todos)
+  localStorage.todos = JSON.stringify(todos)
   ractive.set('item', '')
 }
 
@@ -80,6 +82,7 @@ function remove(item){
   var todos = ractive.get('todos')
   todos.splice(item, 1)
   ractive.set('todos', todos)
+  localStorage.todos = JSON.stringify(todos)
 }
 
 function edit(index){
@@ -97,6 +100,7 @@ function save(index){
   var todos = ractive.get('todos')
   todos[index] = item_edit
   ractive.set('todos', todos)
+  localStorage.todos = JSON.stringify(todos)
 }
 
 function swap(array, index_a, index_b){
@@ -109,13 +113,17 @@ function swap(array, index_a, index_b){
 function up(index){
   var todos = ractive.get('todos')
   if(index<=0) return
-  ractive.set('todos', swap(todos, index, index-1))
+  todos = swap(todos, index, index-1)
+  ractive.set('todos', todos)
+  localStorage.todos = JSON.stringify(todos)
 }
 
 function down(index){
   var todos = ractive.get('todos')
   if(index>=(todos.length-1)) return
-  ractive.set('todos', swap(todos, index, index+1))
+  todos = swap(todos, index, index+1)
+  ractive.set('todos', todos)
+  localStorage.todos = JSON.stringify(todos)
 }
 
 function toggle_edit_mode(){
