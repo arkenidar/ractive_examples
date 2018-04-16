@@ -8,11 +8,9 @@
 <script id="template" type="text/ractive">
 <b>list</b>
 {{#if edit_mode==false}}
-  <ul>
-    {{#each todos}}
-      <li>{{this}}</li>
-    {{/each}}
-  </ul>
+  {{#each todos}}
+    <div>* {{this}}</div>
+  {{/each}}
 {{else}}
   {{#each todos: index}}
   <div>
