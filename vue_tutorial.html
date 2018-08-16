@@ -1,0 +1,51 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>list app: a Vue tutorial</title>
+
+<script src="vue.js"></script>
+
+<div id="vue_app">
+<button onclick="add()">add</button>
+<button onclick="edit()">edit</button>
+<div v-for="(item, index) in todos">
+    {{index}}: {{item}}
+</div>
+</div>
+
+<script>
+let vue=new Vue({
+    el: '#vue_app',
+    data: {
+        todos: load(),
+    },
+})
+
+function load(){
+    return localStorage.todos ? JSON.parse(localStorage.todos) : []
+}
+
+function save(){
+    localStorage.todos=JSON.stringify(vue.$data.todos)
+}
+
+function add(){
+    var text=prompt('text?')
+    if(text=='')return
+    let position=prompt('position?',0)
+    vue.$data.todos.splice(position,0,text)
+    save()
+}
+
+function edit(){
+    var index=prompt('position?')
+    var current=vue.$data.todos[index]
+    var text=prompt('new text? (no text to remove it)',current)
+    if(text==null) return
+    text=text.trim()
+    if(text=='') vue.$data.todos.splice(index,1)
+    else vue.$data.todos.splice(index,1,text)
+    save()
+}
+
+</script>
