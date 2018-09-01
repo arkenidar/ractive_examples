@@ -15,11 +15,19 @@ function evalElement(selector){
 }
 document.addEventListener("DOMContentLoaded", () => evalElement('script[type=eval]') )
 setInterval( () => evalElement('script[type=eval]') )
+
+var array=[]
 </script>
 
 <script type="eval">new Date()</script>
 <script type="eval">ulFromArray([10,20,30])</script>
 <script type="eval">ulFromArray(['aaa','bbb','ccc'])</script>
+
+<script type="eval">ulFromArray(array)</script>
+
+<button onclick="array=[1,2,3]">[1,2,3]</button>
+<button onclick="array=[3,4,5]">[3,4,5]</button>
+
 <script>
 function ulFromArray(array){
     var html='<ul>'
