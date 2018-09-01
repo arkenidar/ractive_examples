@@ -1,0 +1,33 @@
+<!doctype html>
+<body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>eval js</title>
+
+<script>
+function evalElement(selector){
+    for(var element of document.querySelectorAll(selector)){
+        element.parentNode.removeChild(element.nextSibling)
+        var html=eval(element.innerText)
+        element.insertAdjacentHTML('afterend','<span>'+html+'</span>')
+    }
+}
+document.addEventListener("DOMContentLoaded", () => evalElement('script[type=eval]') )
+setInterval( () => evalElement('script[type=eval]') )
+</script>
+
+<script type="eval">new Date()</script>
+<script type="eval">ulFromArray([10,20,30])</script>
+<script type="eval">ulFromArray(['aaa','bbb','ccc'])</script>
+<script>
+function ulFromArray(array){
+    var html='<ul>'
+    for(var i of array.keys())
+        html+='<li>'+array[i]+'</li>'
+    html+='</ul>'
+    return html
+}
+</script>
+
+</body>
