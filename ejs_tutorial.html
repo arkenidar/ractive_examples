@@ -17,21 +17,34 @@ document.addEventListener("DOMContentLoaded", () => {
     evalElement('script[type=eval]')
     setInterval( () => evalElement('script[type=eval]', true) )
 })
-
-var array=[]
 </script>
 
+<!-- live date -->
 <div><script type="eval">new Date()</script></div>
+
+<!-- value from input -->
 <div><input id="name" placeholder="name" value="World"> Hello <script type="eval">document.all.name.value</script></div>
+
+<!-- value from input modified for "two-way data binding" -->
+<div>
+    <input id="name2" placeholder="name" value="World" oninput="window.name2=this.value">
+    Hello <script type="eval">name2</script>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.all.name2.dispatchEvent(new Event('input'))
+    })
+    </script>
+</div>
+
 <script type="eval">ulFromArray([10,20,30])</script>
 <script type="eval">ulFromArray(['aaa','bbb','ccc'])</script>
 
 <script type="eval">ulFromArray(array)</script>
-
 <button onclick="array=[1,2,3]">set [1,2,3]</button>
 <button onclick="array=[3,4,5]">set [3,4,5]</button>
 
 <script>
+var array=[]
 function ulFromArray(array){
     var html='<ul>'
     for(var i of array.keys())
