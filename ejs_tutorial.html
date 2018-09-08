@@ -14,6 +14,7 @@ function evalElement(selector, remove=false){
     }
 }
 document.addEventListener("DOMContentLoaded", () => {
+    evalElement('script[type=eval1]')
     evalElement('script[type=eval]')
     setInterval( () => evalElement('script[type=eval]', true) )
 })
@@ -36,8 +37,14 @@ document.addEventListener("DOMContentLoaded", () => {
     </script>
 </div>
 
-<script type="eval">ulFromArray([10,20,30])</script>
-<script type="eval">ulFromArray(['aaa','bbb','ccc'])</script>
+<a onclick="option(1)">option1</a> <a onclick="option(2)">option2</a> <a onclick="option(3)">option3</a>
+<script>function option(n){
+document.querySelectorAll('.option').forEach(option=>option.style.display='none')
+document.querySelector('#option'+parseInt(n)).style.display='block'
+}</script>
+<div class="option" id="option1"><script type="eval1">ulFromArray([10,20,30])</script></div>
+<div class="option" id="option2"><script type="eval1">ulFromArray(['aaa','bbb','ccc'])</script></div>
+<div class="option" id="option3">option3...</div>
 
 <script type="eval">ulFromArray(array)</script>
 <button onclick="array=[1,2,3]">set [1,2,3]</button>
