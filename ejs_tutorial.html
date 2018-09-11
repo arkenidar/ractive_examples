@@ -9,19 +9,35 @@
 function evalElement(selector, remove=false){
     for(var element of document.querySelectorAll(selector)){
         if(remove) element.parentNode.removeChild(element.nextSibling)
-        var html=eval(element.innerText)
-        element.insertAdjacentHTML('afterend','<span>'+html+'</span>')
+        var html_result=eval(element.innerText)
+        if(typeof html_result != 'undefined') outHTML(html_result)
+        function outHTML(html_result){
+            element.insertAdjacentHTML('afterend','<span>'+html_result+'</span>')
+        }
     }
 }
+
 document.addEventListener("DOMContentLoaded", () => {
     evalElement('script[type=eval1]')
     evalElement('script[type=eval]')
     setInterval( () => evalElement('script[type=eval]', true) )
+    evalElement('script[type=evalAsync]')
 })
+const fetchUT = async (url,type='json') => await (await fetch(url))[type]()
 </script>
 
 <!-- live date -->
 <div><script type="eval">new Date()</script></div>
+
+<!-- evalAsync with fetch -->
+<div><script type="evalAsync">
+void(
+fetchUT('sample_text.txt','text').then((data)=>{
+    //data=JSON.stringify(data)
+    outHTML(data)
+})
+)
+</script></div>
 
 <!-- value from input -->
 <div><input id="name" placeholder="name" value="World"> Hello <script type="eval">document.all.name.value</script></div>
