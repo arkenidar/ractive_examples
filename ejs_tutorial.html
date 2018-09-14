@@ -10,8 +10,8 @@ function evalElement(selector, remove=false){
     for(var element of document.querySelectorAll(selector)){
         if(remove) element.parentNode.removeChild(element.nextSibling)
         var html_result=eval(element.innerText)
-        if(typeof html_result != 'undefined') outHTML(html_result)
-        function outHTML(html_result){
+        if(typeof html_result != 'undefined') outHTML(element, html_result)
+        function outHTML(element, html_result){
             element.insertAdjacentHTML('afterend','<span>'+html_result+'</span>')
         }
     }
@@ -31,12 +31,12 @@ const fetchUT = async (url,type='json') => await (await fetch(url))[type]()
 
 <!-- evalAsync with fetch -->
 <div><script type="evalAsync">
-void(
+((element)=>{
 fetchUT('sample_text.txt','text').then((data)=>{
     //data=JSON.stringify(data)
-    outHTML(data)
+    outHTML(element, data)
 })
-)
+})(element)
 </script></div>
 
 <!-- value from input -->
@@ -76,5 +76,15 @@ function ulFromArray(array){
     return html
 }
 </script>
+
+<!-- evalAsync with fetch + rendered JSON -->
+<div><script type="evalAsync">
+((element)=>{
+fetchUT('sample_json.txt','text').then((data)=>{
+    json=JSON.parse(data)
+    outHTML(element, ulFromArray(json))
+})
+})(element)
+</script></div>
 
 </body>
