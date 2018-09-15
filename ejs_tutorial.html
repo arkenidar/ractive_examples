@@ -80,8 +80,7 @@ function ulFromArray(array){
 <!-- evalAsync with fetch + rendered JSON -->
 <div><script type="evalAsync">
 ((element)=>{
-fetchUT('sample_json.txt','text').then((data)=>{
-    json=JSON.parse(data)
+fetchUT('sample_json.json','json').then((json)=>{
     outHTML(element, ulFromArray(json))
 })
 })(element)
