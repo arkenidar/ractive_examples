@@ -48,7 +48,10 @@ fetchUT('sample_text.txt','text').then((data)=>{
     Hello <script type="eval">name2</script>
     <script>
     document.addEventListener("DOMContentLoaded", () => {
-        document.all.name2.dispatchEvent(new Event('input'))
+        //document.all.name2.dispatchEvent(new Event('input'))
+
+        // input fired in a generalized style (id not specified)
+        document.querySelectorAll('input[value]').forEach((input)=>{input.dispatchEvent(new Event('input'))})
     })
     </script>
 </div>
