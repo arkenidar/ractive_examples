@@ -89,4 +89,10 @@ fetchUT('sample_json.json','json').then((json)=>{
 })(element)
 </script></div>
 
+<!-- password reveal example -->
+<div>
+    <input type="password" id="password"><input type="checkbox" id="showPassword">
+    <script type="eval">document.getElementById('showPassword').checked?document.getElementById('password').value:''</script>
+</div>
+
 </body>
