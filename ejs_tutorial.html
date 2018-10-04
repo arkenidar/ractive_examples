@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
     evalElement('script[class=eval1]')
     evalElement('script[class=eval]')
     setInterval( () => evalElement('script[class=eval]', true) )
-    evalElement('script[class=evalAsync]')
 })
 const fetchUT = async (url,type='json') => await (await fetch(url))[type]()
 </script>
@@ -30,7 +29,7 @@ const fetchUT = async (url,type='json') => await (await fetch(url))[type]()
 <div><script class="eval">new Date()</script></div>
 
 <!-- evalAsync with fetch -->
-<div><script class="evalAsync">
+<div><script class="eval1">
 ((element)=>{
 fetchUT('sample_text.txt','text').then((data)=>{
     //data=JSON.stringify(data)
@@ -81,7 +80,7 @@ function ulFromArray(array){
 </script>
 
 <!-- evalAsync with fetch + rendered JSON -->
-<div><script class="evalAsync">
+<div><script class="eval1">
 ((element)=>{
 fetchUT('sample_json.json','json').then((json)=>{
     outHTML(element, ulFromArray(json))
