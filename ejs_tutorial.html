@@ -18,9 +18,7 @@ function evalElement(selector, remove=false){
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    evalElement('script[evalwrite=once]')
-
-    evalElement('script[evalwrite=repeatdly]')
+    evalElement('script[evalwrite]')
     setInterval( () => evalElement('script[evalwrite=repeatdly]', true) )
 })
 const fetchUT = async (url,type='json') => await (await fetch(url))[type]()
