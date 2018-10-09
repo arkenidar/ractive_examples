@@ -4,26 +4,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>eval js</title>
-
+<style>.red { color:red }</style>
 <script>
-function evalElement(element, remove=false){
+// eval-write an element
+function evalWriteElement(element, remove=false){
+    // to update an element first remove it
     if(remove) element.parentNode.removeChild(element.nextSibling)
+    // the eval part (evaluate the script)
     var eval_result=eval(element.innerText)
+    // if the evaluated script results in a function call this function (that results in html)
     var html_result=typeof eval_result!='function'?eval_result:eval_result(element)
+    // if there is no result from the eval don't write any html in this way
+    // but the script can still call outHTMl and write html in this way
     if(typeof html_result != 'undefined') outHTML(element, html_result)
+    // the write part (insert an adiacent span with the resulting html)
     function outHTML(element, html_result){
         element.insertAdjacentHTML('afterend','<span>'+html_result+'</span>')
     }
 }
 
+// on document ready
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('script[evalwrite]').forEach((element)=>evalElement(element)) 
-    document.querySelectorAll('script[evalwrite=repeatdly]').forEach(element=>setInterval(()=>evalElement(element,true)))
+    // first mandatory write
+    document.querySelectorAll('script[evalwrite]').forEach((element)=>evalWriteElement(element)) 
+    // time-continous repeated write (updates)
+    document.querySelectorAll('script[evalwrite=repeatdly]').forEach(element=>setInterval(()=>evalWriteElement(element,true)))
 })
 
+// fetch with Url and Type
 const fetchUT = async (url,type='json') => await (await fetch(url))[type]()
 
+// a linear array variable
 var array=[]
+// converts a linear array into <ul>
 function ulFromArray(array){
     var html='<ul>'
     for(var i of array.keys())
@@ -31,26 +44,27 @@ function ulFromArray(array){
     html+='</ul>'
     return html
 }
+// integer counter variable
 var counter=1
 </script>
 
-<!-- live date -->
+<div class="red">live date (repeatedly updated)</div>
 <div><script evalwrite="repeatdly">new Date()</script></div>
 
-<!-- evalAsync with fetch -->
+<div class="red">evalAsync with fetch (no update)</div>
 <div><script evalwrite="once">
 ((element)=>{
+// some text file is fetched and ouputted
 fetchUT('sample_text.txt','text').then((data)=>{
-    //data=JSON.stringify(data)
     outHTML(element, data)
 })
 })
 </script></div>
 
-<!-- value from input -->
+<div class="red">value from &lt;input&gt; (updated)</div>
 <div><input id="name" placeholder="name" value="World"> Hello <script evalwrite="repeatdly">document.all.name.value</script></div>
 
-<!-- value from input modified for "two-way data binding" -->
+<div class="red">value from input modified for "two-way data binding"</div>
 <div>
     <input id="name2" placeholder="name" value="World" oninput="window.name2=this.value">
     Hello <script evalwrite="repeatdly">name2</script>
@@ -58,12 +72,14 @@ fetchUT('sample_text.txt','text').then((data)=>{
     document.addEventListener("DOMContentLoaded", () => {
         //document.all.name2.dispatchEvent(new Event('input'))
 
+        // every <input> with value triggers an input event
         // input fired in a generalized style (id not specified)
         document.querySelectorAll('input[value]').forEach((input)=>{input.dispatchEvent(new Event('input'))})
     })
     </script>
 </div>
 
+<div class="red">optional display (shows only 1 of many)</div>
 <a onclick="option(1)">option1</a> <a onclick="option(2)">option2</a> <a onclick="option(3)">option3</a>
 <script>function option(n){
 document.querySelectorAll('.option').forEach(option=>option.style.display='none')
@@ -73,11 +89,12 @@ document.querySelector('#option'+parseInt(n)).style.display='block'
 <div class="option" id="option2"><script evalwrite="once">ulFromArray(['aaa','bbb','ccc'])</script></div>
 <div class="option" id="option3">option3...</div>
 
+<div class="red">shows an &lt;ul&gt; from an array that is assigned</div>
 <script evalwrite="repeatdly">ulFromArray(array)</script>
 <button onclick="array=[1,2,3]">set [1,2,3]</button>
 <button onclick="array=[3,4,5]">set [3,4,5]</button>
 
-<!-- evalAsync with fetch + rendered JSON -->
+<div class="red">evalAsync with fetch + rendered JSON</div>
 <div><script evalwrite="once">
 ((element)=>{
 fetchUT('sample_json.json','json').then((json)=>{
@@ -86,13 +103,14 @@ fetchUT('sample_json.json','json').then((json)=>{
 })
 </script></div>
 
-<!-- password reveal example -->
+<div class="red">password reveal example</div>
 <div>
     <input type="password" id="password"><input type="checkbox" id="showPassword">
     <script evalwrite="repeatdly">document.getElementById('showPassword').checked?document.getElementById('password').value:''</script>
 </div>
 
+<div class="red">introduction of "triggered" type, compared to a "repeatdly" type</div>
 <div><button onclick="counter++">+</button><script evalwrite="repeatdly">counter</script></div>
-<div><button onclick="counter++;evalElement(document.all.tew,true)"">+</button><script evalwrite="triggered" id="tew">counter</script></div>
+<div><button onclick="counter++;evalWriteElement(document.all.tew,true)"">+</button><script evalwrite="triggered" id="tew">counter</script></div>
 
 </body>
