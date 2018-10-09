@@ -113,4 +113,17 @@ fetchUT('sample_json.json','json').then((json)=>{
 <div><button onclick="counter++">+</button><script evalwrite="repeatdly">counter</script></div>
 <div><button onclick="counter++;evalWriteElement(document.all.tew,true)"">+</button><script evalwrite="triggered" id="tew">counter</script></div>
 
+<script>
+class Counter{
+    constructor(){ self.number = 1}
+    get n(){ return self.number }
+    set n(x){
+        self.number=x
+        evalWriteElement(document.all.tew2,true)
+    }
+}
+counterObj=new Counter()
+</script>
+<div><button onclick="counterObj.n++">+</button><script evalwrite="triggered" id="tew2">counterObj.n</script></div>
+
 </body>
