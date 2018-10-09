@@ -6,22 +6,32 @@
 <title>eval js</title>
 
 <script>
-function evalElement(selector, remove=false){
-    for(var element of document.querySelectorAll(selector)){
-        if(remove) element.parentNode.removeChild(element.nextSibling)
-        var html_result=eval(element.innerText)
-        if(typeof html_result != 'undefined') outHTML(element, html_result)
-        function outHTML(element, html_result){
-            element.insertAdjacentHTML('afterend','<span>'+html_result+'</span>')
-        }
+function evalElement(element, remove=false){
+    if(remove) element.parentNode.removeChild(element.nextSibling)
+    var eval_result=eval(element.innerText)
+    var html_result=typeof eval_result!='function'?eval_result:eval_result(element)
+    if(typeof html_result != 'undefined') outHTML(element, html_result)
+    function outHTML(element, html_result){
+        element.insertAdjacentHTML('afterend','<span>'+html_result+'</span>')
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    evalElement('script[evalwrite]')
-    setInterval( () => evalElement('script[evalwrite=repeatdly]', true) )
+    document.querySelectorAll('script[evalwrite]').forEach((element)=>evalElement(element)) 
+    document.querySelectorAll('script[evalwrite=repeatdly]').forEach(element=>setInterval(()=>evalElement(element,true)))
 })
+
 const fetchUT = async (url,type='json') => await (await fetch(url))[type]()
+
+var array=[]
+function ulFromArray(array){
+    var html='<ul>'
+    for(var i of array.keys())
+        html+='<li>'+array[i]+'</li>'
+    html+='</ul>'
+    return html
+}
+var counter=1
 </script>
 
 <!-- live date -->
@@ -34,7 +44,7 @@ fetchUT('sample_text.txt','text').then((data)=>{
     //data=JSON.stringify(data)
     outHTML(element, data)
 })
-})(element)
+})
 </script></div>
 
 <!-- value from input -->
@@ -67,24 +77,13 @@ document.querySelector('#option'+parseInt(n)).style.display='block'
 <button onclick="array=[1,2,3]">set [1,2,3]</button>
 <button onclick="array=[3,4,5]">set [3,4,5]</button>
 
-<script>
-var array=[]
-function ulFromArray(array){
-    var html='<ul>'
-    for(var i of array.keys())
-        html+='<li>'+array[i]+'</li>'
-    html+='</ul>'
-    return html
-}
-</script>
-
 <!-- evalAsync with fetch + rendered JSON -->
 <div><script evalwrite="once">
 ((element)=>{
 fetchUT('sample_json.json','json').then((json)=>{
     outHTML(element, ulFromArray(json))
 })
-})(element)
+})
 </script></div>
 
 <!-- password reveal example -->
@@ -92,5 +91,8 @@ fetchUT('sample_json.json','json').then((json)=>{
     <input type="password" id="password"><input type="checkbox" id="showPassword">
     <script evalwrite="repeatdly">document.getElementById('showPassword').checked?document.getElementById('password').value:''</script>
 </div>
+
+<div><button onclick="counter++">+</button><script evalwrite="repeatdly">counter</script></div>
+<div><button onclick="counter++;evalElement(document.all.tew,true)"">+</button><script evalwrite="triggered" id="tew">counter</script></div>
 
 </body>
