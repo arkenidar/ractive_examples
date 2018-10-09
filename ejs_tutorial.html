@@ -103,10 +103,17 @@ fetchUT('sample_json.json','json').then((json)=>{
 })
 </script></div>
 
-<div class="red">password reveal example</div>
+<div class="red">password reveal example (using "repeatdly")</div>
 <div>
     <input type="password" id="password"><input type="checkbox" id="showPassword">
     <script evalwrite="repeatdly">document.getElementById('showPassword').checked?document.getElementById('password').value:''</script>
+</div>
+
+<div class="red">password reveal example (using "triggered")</div>
+<div>
+    <script>function updatePasswordReveal(){evalWriteElement(document.all.pr2,true)}</script>
+    <input type="password" id="password2" oninput="updatePasswordReveal()"><input type="checkbox" id="showPassword2" oninput="updatePasswordReveal()">
+    <script id="pr2" evalwrite="triggered">document.getElementById('showPassword2').checked?document.getElementById('password2').value:''</script>
 </div>
 
 <div class="red">introduction of "triggered" type, compared to a "repeatdly" type</div>
