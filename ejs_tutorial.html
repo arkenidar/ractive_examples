@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>eval js</title>
-<style>.red { color:red }</style>
+<style>.red { color:red; padding-top: 1em; }</style>
 <script>
 // eval-write an element
 function evalWriteElement(element, remove=false){
@@ -47,6 +47,11 @@ function ulFromArray(array){
 // integer counter variable
 var counter=1
 </script>
+
+<div class="red">EmbeddedJS(<a href="http://ejs.co" target="_blank">http://ejs.co</a>) templating (see <a href="https://github.com/arkenidar/ejs_plus" target="_blank">https://github.com/arkenidar/ejs_plus</a>)</div>
+<script src="https://arkenidar.github.io/ejs_plus/ejs.min.js"></script>
+<script src="https://arkenidar.github.io/ejs_plus/ejs_price.js"></script>
+<div><script evalwrite>price('product1', 0.5)</script></div>
 
 <div class="red">live date (repeatedly updated)</div>
 <div><script evalwrite="repeatdly">new Date()</script></div>
