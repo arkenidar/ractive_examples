@@ -72,7 +72,7 @@ var counter=1
 <div>
 <input value="lynx" placeholder="username" id="username">
 <button onclick="user=document.all.username.value;ejsWriteElement(document.all.ifuser,true)">login</button>
-<script type="text/ejs" embeddedjs id="ifuser">
+<script type="text/ejs" embeddedjs="triggered" id="ifuser">
 <% if (typeof user!='undefined') { %>
     <h2>"<%= user %>" user logged in</h2>
 <% } %>
@@ -81,7 +81,7 @@ var counter=1
 <div class="red">EmbeddedJS(<a href="http://ejs.co" target="_blank">http://ejs.co</a>) templating (see <a href="https://github.com/arkenidar/ejs_plus" target="_blank">https://github.com/arkenidar/ejs_plus</a>)</div>
 <script src="https://arkenidar.github.io/ejs_plus/ejs.min.js"></script>
 <script src="https://arkenidar.github.io/ejs_plus/ejs_price.js"></script>
-<div><script evalwrite>price('product1', 0.5)</script></div>
+<div><script evalwrite="once">price('product1', 0.5)</script></div>
 
 <div class="red">live date (repeatedly updated)</div>
 <div><script evalwrite="repeatdly">new Date()</script></div>
