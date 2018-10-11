@@ -72,11 +72,11 @@ var counter=1
 <div>
 <input value="lynx" placeholder="username" id="username">
 <button onclick="user=document.all.username.value;ejsWriteElement(document.all.ifuser,true)">login</button>
-<span embeddedjs id="ifuser">
+<script type="text/ejs" embeddedjs id="ifuser">
 <% if (typeof user!='undefined') { %>
     <h2>"<%= user %>" user logged in</h2>
 <% } %>
-</span></div>
+</script></div>
 
 <div class="red">EmbeddedJS(<a href="http://ejs.co" target="_blank">http://ejs.co</a>) templating (see <a href="https://github.com/arkenidar/ejs_plus" target="_blank">https://github.com/arkenidar/ejs_plus</a>)</div>
 <script src="https://arkenidar.github.io/ejs_plus/ejs.min.js"></script>
