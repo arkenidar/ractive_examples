@@ -4,7 +4,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>eval js</title>
-<style>.red { color:red; padding-top: 1em; }</style>
+<style>
+.red { color:red; padding-top: 1em; }
+[embeddedjs] { display: none; }
+</style>
 <script>
 // eval-write an element
 function evalWriteElement(element, remove=false){
@@ -22,13 +25,30 @@ function evalWriteElement(element, remove=false){
         element.insertAdjacentHTML('afterend','<span>'+html_result+'</span>')
     }
 }
+// eval-write an element
+function ejsWriteElement(element, remove=false){
+    // to update an element first remove it
+    if(remove) element.parentNode.removeChild(element.nextSibling)
+    //element.innerText
+    var html_result=ejs.render(element.innerText,window)
+    outHTML(element, html_result)
+    // the write part (insert an adiacent span with the resulting html)
+    function outHTML(element, html_result){
+        element.insertAdjacentHTML('afterend','<span>'+html_result+'</span>')
+    }
+}
 
 // on document ready
 document.addEventListener("DOMContentLoaded", () => {
     // first mandatory write
-    document.querySelectorAll('script[evalwrite]').forEach((element)=>evalWriteElement(element)) 
+    document.querySelectorAll('[evalwrite]').forEach((element)=>evalWriteElement(element)) 
     // time-continous repeated write (updates)
-    document.querySelectorAll('script[evalwrite=repeatdly]').forEach(element=>setInterval(()=>evalWriteElement(element,true)))
+    document.querySelectorAll('[evalwrite=repeatdly]').forEach(element=>setInterval(()=>evalWriteElement(element,true)))
+
+    // first mandatory write
+    document.querySelectorAll('[embeddedjs]').forEach((element)=>ejsWriteElement(element))
+    // time-continous repeated write (updates)
+    document.querySelectorAll('[embeddedjs=repeatdly]').forEach(element=>setInterval(()=>ejsWriteElement(element,true)))
 })
 
 // fetch with Url and Type
@@ -137,5 +157,8 @@ class Counter{
 counterObj=new Counter()
 </script>
 <div><button onclick="counterObj.n++">+</button><script evalwrite="triggered" id="tew2">counterObj.n</script></div>
+
+<div class="red">embeddedjs="repeatdly" test/example</div>
+<div><span embeddedjs="repeatdly">counter=<%= counter %></span></div>
 
 </body>
