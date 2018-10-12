@@ -73,7 +73,7 @@ var counter=1
 <input value="lynx" placeholder="username" id="username">
 <button onclick="user=document.all.username.value;ejsWriteElement(document.all.ifuser,true)">login</button>
 <script type="text/ejs" embeddedjs="triggered" id="ifuser">
-<% if (typeof user!='undefined') { %>
+<% if ('user' in window) { %>
     <h2>"<%= user %>" user logged in</h2>
 <% } %>
 </script></div>
