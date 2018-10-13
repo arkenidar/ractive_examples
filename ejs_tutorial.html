@@ -10,7 +10,7 @@
 </style>
 <script>
 // eval-write an element
-function evalWriteElement(element, remove=false){
+function evalWriteElement(element, remove=true){
     // to update an element first remove it
     if(remove) element.parentNode.removeChild(element.nextSibling)
     // the eval part (evaluate the script)
@@ -26,7 +26,7 @@ function evalWriteElement(element, remove=false){
     }
 }
 // eval-write an element
-function ejsWriteElement(element, remove=false){
+function ejsWriteElement(element, remove=true){
     // to update an element first remove it
     if(remove) element.parentNode.removeChild(element.nextSibling)
     //element.innerText
@@ -41,14 +41,14 @@ function ejsWriteElement(element, remove=false){
 // on document ready
 document.addEventListener("DOMContentLoaded", () => {
     // first mandatory write
-    document.querySelectorAll('[evalwrite]').forEach((element)=>evalWriteElement(element)) 
+    document.querySelectorAll('[evalwrite]').forEach((element)=>evalWriteElement(element), false) 
     // time-continous repeated write (updates)
-    document.querySelectorAll('[evalwrite=repeatdly]').forEach(element=>setInterval(()=>evalWriteElement(element,true)))
+    document.querySelectorAll('[evalwrite=repeatdly]').forEach(element=>setInterval(()=>evalWriteElement(element)))
 
     // first mandatory write
-    document.querySelectorAll('[embeddedjs]').forEach((element)=>ejsWriteElement(element))
+    document.querySelectorAll('[embeddedjs]').forEach((element)=>ejsWriteElement(element), false)
     // time-continous repeated write (updates)
-    document.querySelectorAll('[embeddedjs=repeatdly]').forEach(element=>setInterval(()=>ejsWriteElement(element,true)))
+    document.querySelectorAll('[embeddedjs=repeatdly]').forEach(element=>setInterval(()=>ejsWriteElement(element)))
 })
 
 // fetch with Url and Type
@@ -72,7 +72,7 @@ var user=''
 <div class="red">embeddedjs test/example</div>
 <div>
 <input value="lynx" placeholder="username" id="username">
-<button onclick="user=document.all.username.value;ejsWriteElement(document.all.ifuser,true)">login</button>
+<button onclick="user=document.all.username.value;ejsWriteElement(document.all.ifuser)">login</button>
 <script type="text/ejs" embeddedjs="triggered" id="ifuser">
 <% if (user!="") { %>
     <h2>"<%= user %>" user logged in</h2>
@@ -147,14 +147,14 @@ fetchUT('sample_json.json','json').then((json)=>{
 
 <div class="red">password reveal example (using "triggered")</div>
 <div>
-    <script>function updatePasswordReveal(){evalWriteElement(document.all.pr2,true)}</script>
+    <script>function updatePasswordReveal(){evalWriteElement(document.all.pr2)}</script>
     <input type="password" id="password2" oninput="updatePasswordReveal()"><input type="checkbox" id="showPassword2" oninput="updatePasswordReveal()">
     <script id="pr2" evalwrite="triggered">document.getElementById('showPassword2').checked?document.getElementById('password2').value:''</script>
 </div>
 
 <div class="red">introduction of "triggered" type, compared to a "repeatdly" type</div>
 <div><button onclick="counter++">+</button><script evalwrite="repeatdly">counter</script></div>
-<div><button onclick="counter++;evalWriteElement(document.all.tew,true)">+</button><script evalwrite="triggered" id="tew">counter</script></div>
+<div><button onclick="counter++;evalWriteElement(document.all.tew)">+</button><script evalwrite="triggered" id="tew">counter</script></div>
 
 <script>
 class Counter{
@@ -162,7 +162,7 @@ class Counter{
     get n(){ return self.number }
     set n(x){
         self.number=x
-        evalWriteElement(document.all.tew2,true)
+        evalWriteElement(document.all.tew2)
     }
 }
 counterObj=new Counter()
