@@ -66,6 +66,7 @@ function ulFromArray(array){
 }
 // integer counter variable
 var counter=1
+var user=''
 </script>
 
 <div class="red">embeddedjs test/example</div>
@@ -73,7 +74,7 @@ var counter=1
 <input value="lynx" placeholder="username" id="username">
 <button onclick="user=document.all.username.value;ejsWriteElement(document.all.ifuser,true)">login</button>
 <script type="text/ejs" embeddedjs="triggered" id="ifuser">
-<% if ('user' in window) { %>
+<% if (user!="") { %>
     <h2>"<%= user %>" user logged in</h2>
 <% } %>
 </script></div>
