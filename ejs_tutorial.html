@@ -41,12 +41,12 @@ function ejsWriteElement(element, remove=true){
 // on document ready
 document.addEventListener("DOMContentLoaded", () => {
     // first mandatory write
-    document.querySelectorAll('[evalwrite]').forEach((element)=>evalWriteElement(element), false) 
+    document.querySelectorAll('[evalwrite]').forEach((element)=>evalWriteElement(element, false)) 
     // time-continous repeated write (updates)
     document.querySelectorAll('[evalwrite=repeatdly]').forEach(element=>setInterval(()=>evalWriteElement(element)))
 
     // first mandatory write
-    document.querySelectorAll('[embeddedjs]').forEach((element)=>ejsWriteElement(element), false)
+    document.querySelectorAll('[embeddedjs]').forEach((element)=>ejsWriteElement(element, false))
     // time-continous repeated write (updates)
     document.querySelectorAll('[embeddedjs=repeatdly]').forEach(element=>setInterval(()=>ejsWriteElement(element)))
 })
