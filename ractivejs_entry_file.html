@@ -1,0 +1,20 @@
+<h1>Hello, {{name || 'Ractive'}}!</h1>
+<button onclick="app.set('name',prompt('name?'))">
+name?
+</button>
+<!-- https://github.com/arkenidar/ractive_examples -->
+<script>
+  const App = Ractive.extend({
+    template: $TEMPLATE,
+    css: $CSS,
+    cssId: 'app'
+  });
+
+  const app = window.app = new App({
+    target: 'body'
+  });
+</script>
+
+<style>
+  h1 { color: red; }
+</style>
