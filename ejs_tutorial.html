@@ -9,12 +9,19 @@
 [embeddedjs] { display: none; }
 </style>
 <script>
+
+function getContent(element){
+    return element.tagName=='TEMPLATE'?
+    element.content.textContent:
+    element.innerHTML
+}
+
 // eval-write an element
 function evalWriteElement(element, remove=true){
     // to update an element first remove it
     if(remove) element.parentNode.removeChild(element.nextSibling)
     // the eval part (evaluate the script)
-    var eval_result=eval(element.innerHTML)
+    var eval_result=eval(getContent(element))
     // if the evaluated script results in a function call this function (that results in html)
     var html_result=typeof eval_result!='function'?eval_result:eval_result(element)
     // if there is no result from the eval don't write any html in this way
@@ -30,7 +37,7 @@ function ejsWriteElement(element, remove=true){
     // to update an element first remove it
     if(remove) element.parentNode.removeChild(element.nextSibling)
     //element.innerText
-    var html_result=ejs.render(element.innerHTML,window)
+    var html_result=ejs.render(getContent(element),window)
     outHTML(element, html_result)
     // the write part (insert an adiacent span with the resulting html)
     function outHTML(element, html_result){
@@ -170,7 +177,7 @@ counterObj=new Counter()
 <div><button onclick="counterObj.n++">+</button><script evalwrite="triggered" id="tew2">counterObj.n</script></div>
 
 <div class="red">embeddedjs="repeatedly" test/example</div>
-<div><span embeddedjs="repeatedly">counter=<%= counter %></span></div>
+<div><template id="counter" embeddedjs="repeatedly">counter=<%= counter %></template></div>
 
 <div class="red">embeddedjs="triggered" test/example (THIS allows a kind of "2-way data-binding")</div>
 <div embeddedjs="triggered" id="bind">
