@@ -43,12 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // first mandatory write
     document.querySelectorAll('[evalwrite]').forEach((element)=>evalWriteElement(element, false)) 
     // time-continous repeated write (updates)
-    document.querySelectorAll('[evalwrite=repeatdly]').forEach(element=>setInterval(()=>evalWriteElement(element)))
+    document.querySelectorAll('[evalwrite=repeatedly]').forEach(element=>setInterval(()=>evalWriteElement(element)))
 
     // first mandatory write
     document.querySelectorAll('[embeddedjs]').forEach((element)=>ejsWriteElement(element, false))
     // time-continous repeated write (updates)
-    document.querySelectorAll('[embeddedjs=repeatdly]').forEach(element=>setInterval(()=>ejsWriteElement(element)))
+    document.querySelectorAll('[embeddedjs=repeatedly]').forEach(element=>setInterval(()=>ejsWriteElement(element)))
 })
 
 // fetch with Url and Type
@@ -85,7 +85,7 @@ var user=''
 <div><script evalwrite="once">price('product1', 0.5)</script></div>
 
 <div class="red">live date (repeatedly updated)</div>
-<div><script evalwrite="repeatdly">new Date()</script></div>
+<div><script evalwrite="repeatedly">new Date()</script></div>
 
 <div class="red">evalAsync with fetch (no update)</div>
 <div><script evalwrite="once">
@@ -98,12 +98,12 @@ fetchUT('sample_text.txt','text').then((data)=>{
 </script></div>
 
 <div class="red">value from &lt;input&gt; (updated)</div>
-<div><input id="name" placeholder="name" value="World"> Hello <script evalwrite="repeatdly">document.all.name.value</script></div>
+<div><input id="name" placeholder="name" value="World"> Hello <script evalwrite="repeatedly">document.all.name.value</script></div>
 
 <div class="red">value from input modified for "two-way data binding"</div>
 <div>
     <input id="name2" placeholder="name" value="World" oninput="window.name2=this.value">
-    Hello <script evalwrite="repeatdly">name2</script>
+    Hello <script evalwrite="repeatedly">name2</script>
     <script>
     document.addEventListener("DOMContentLoaded", () => {
         //document.all.name2.dispatchEvent(new Event('input'))
@@ -126,7 +126,7 @@ document.querySelector('#option'+parseInt(n)).style.display='block'
 <div class="option" id="option3">option3...</div>
 
 <div class="red">shows an &lt;ul&gt; from an array that is assigned</div>
-<script evalwrite="repeatdly">ulFromArray(array)</script>
+<script evalwrite="repeatedly">ulFromArray(array)</script>
 <button onclick="array=[1,2,3]">set [1,2,3]</button>
 <button onclick="array=[3,4,5]">set [3,4,5]</button>
 
@@ -139,10 +139,10 @@ fetchUT('sample_json.json','json').then((json)=>{
 })
 </script></div>
 
-<div class="red">password reveal example (using "repeatdly")</div>
+<div class="red">password reveal example (using "repeatedly")</div>
 <div>
     <input type="password" id="password"><input type="checkbox" id="showPassword">
-    <script evalwrite="repeatdly">document.getElementById('showPassword').checked?document.getElementById('password').value:''</script>
+    <script evalwrite="repeatedly">document.getElementById('showPassword').checked?document.getElementById('password').value:''</script>
 </div>
 
 <div class="red">password reveal example (using "triggered")</div>
@@ -152,8 +152,8 @@ fetchUT('sample_json.json','json').then((json)=>{
     <script id="pr2" evalwrite="triggered">document.getElementById('showPassword2').checked?document.getElementById('password2').value:''</script>
 </div>
 
-<div class="red">introduction of "triggered" type, compared to a "repeatdly" type</div>
-<div><button onclick="counter++">+</button><script evalwrite="repeatdly">counter</script></div>
+<div class="red">introduction of "triggered" type, compared to a "repeatedly" type</div>
+<div><button onclick="counter++">+</button><script evalwrite="repeatedly">counter</script></div>
 <div><button onclick="counter++;evalWriteElement(document.all.tew)">+</button><script evalwrite="triggered" id="tew">counter</script></div>
 
 <script>
@@ -169,7 +169,7 @@ counterObj=new Counter()
 </script>
 <div><button onclick="counterObj.n++">+</button><script evalwrite="triggered" id="tew2">counterObj.n</script></div>
 
-<div class="red">embeddedjs="repeatdly" test/example</div>
-<div><span embeddedjs="repeatdly">counter=<%= counter %></span></div>
+<div class="red">embeddedjs="repeatedly" test/example</div>
+<div><span embeddedjs="repeatedly">counter=<%= counter %></span></div>
 
 </body>
