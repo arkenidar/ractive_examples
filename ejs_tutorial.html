@@ -30,7 +30,7 @@ function ejsWriteElement(element, remove=true){
     // to update an element first remove it
     if(remove) element.parentNode.removeChild(element.nextSibling)
     //element.innerText
-    var html_result=ejs.render(element.innerText,window)
+    var html_result=ejs.render(element.innerHTML,window)
     outHTML(element, html_result)
     // the write part (insert an adiacent span with the resulting html)
     function outHTML(element, html_result){
@@ -100,7 +100,7 @@ fetchUT('sample_text.txt','text').then((data)=>{
 <div class="red">value from &lt;input&gt; (updated)</div>
 <div><input id="name" placeholder="name" value="World"> Hello <script evalwrite="repeatedly">document.all.name.value</script></div>
 
-<div class="red">value from input modified for "two-way data binding"</div>
+<div class="red">value from input modified for "two-way data binding" (IMPORTANT: two way data-binding is not shown here but in an example that follows)</div>
 <div>
     <input id="name2" placeholder="name" value="World" oninput="window.name2=this.value">
     Hello <script evalwrite="repeatedly">name2</script>
@@ -171,5 +171,16 @@ counterObj=new Counter()
 
 <div class="red">embeddedjs="repeatedly" test/example</div>
 <div><span embeddedjs="repeatedly">counter=<%= counter %></span></div>
+
+<div class="red">embeddedjs="triggered" test/example (THIS allows a kind of "2-way data-binding")</div>
+<div embeddedjs="triggered" id="bind">
+<input value="<%= variable %>" oninput="variable=this.value">
+<button onclick="changeVarTriggerDemo()">changeVarTriggerDemo()</button>
+</div>
+<script>
+var variable='variable1'
+function changeVarTriggerDemo(){
+variable=variable+"123"; ejsWriteElement(document.all.bind)
+}</script>
 
 </body>
