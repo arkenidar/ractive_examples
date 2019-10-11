@@ -14,7 +14,7 @@ function evalWriteElement(element, remove=true){
     // to update an element first remove it
     if(remove) element.parentNode.removeChild(element.nextSibling)
     // the eval part (evaluate the script)
-    var eval_result=eval(element.innerText)
+    var eval_result=eval(element.innerHTML)
     // if the evaluated script results in a function call this function (that results in html)
     var html_result=typeof eval_result!='function'?eval_result:eval_result(element)
     // if there is no result from the eval don't write any html in this way
