@@ -10,6 +10,18 @@
 </style>
 <script>
 
+// eval-write an element
+function writeElement(element, process, remove=true){
+    // to update an element first remove it
+    if(remove) element.parentNode.removeChild(element.nextSibling)
+
+    var html_result=process(element)
+
+    // if there is no result from the eval don't write any html in this way
+    // but the script can still call outHTML and write html in this way
+    if(typeof html_result != 'undefined') outHTML(element, html_result)
+}
+
 function getContent(element){
     return element.tagName=='TEMPLATE'?
     element.content.textContent:(
@@ -17,32 +29,31 @@ function getContent(element){
     element.innerHTML)
 }
 
-// eval-write an element
-function evalWriteElement(element, remove=true){
-    // to update an element first remove it
-    if(remove) element.parentNode.removeChild(element.nextSibling)
+function evalElement(element){
     // the eval part (evaluate the script)
     var eval_result=eval(getContent(element))
-    // if the evaluated script results in a function call this function (that results in html)
+    // if the evaluated script results in a function, call this function (that results in html)
     var html_result=typeof eval_result!='function'?eval_result:eval_result(element)
-    // if there is no result from the eval don't write any html in this way
-    // but the script can still call outHTMl and write html in this way
-    if(typeof html_result != 'undefined') outHTML(element, html_result)
-    // the write part (insert an adiacent span with the resulting html)
-    function outHTML(element, html_result){
-        element.insertAdjacentHTML('afterend','<span>'+html_result+'</span>')
-    }
+    return html_result
+}
+
+function ejsElement(element){
+    var html_result=ejs.render(getContent(element),window)
+    return html_result
+}
+
+// eval-write an element
+function evalWriteElement(element, remove=true){
+    writeElement(element, evalElement, remove)
 }
 // eval-write an element
 function ejsWriteElement(element, remove=true){
-    // to update an element first remove it
-    if(remove) element.parentNode.removeChild(element.nextSibling)
-    var html_result=ejs.render(getContent(element),window)
-    outHTML(element, html_result)
-    // the write part (insert an adiacent span with the resulting html)
-    function outHTML(element, html_result){
-        element.insertAdjacentHTML('afterend','<span>'+html_result+'</span>')
-    }
+    writeElement(element, ejsElement, remove)
+}
+
+// the write part (insert an adiacent span with the resulting html)
+function outHTML(element, html_result){
+    element.insertAdjacentHTML('afterend','<span>'+html_result+'</span>')
 }
 
 // on document ready
