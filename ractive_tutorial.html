@@ -1,135 +1,57 @@
 <!doctype html>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=2">
-<title>to-do list</title>
+<html lang="en">
 
-<div id="target"></div>
+<head>
+  <meta charset="utf-8">
+  <title>to-do list</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/ractive"></script>
+</head>
 
-<script id="template" type="text/ractive">
-<b>list</b>
-{{#if edit_mode==false}}
-  {{#each todos}}
-    <div>* {{this}}</div>
-  {{/each}}
-{{else}}
-  {{#each todos: index}}
-  <div>
-    {{#if editing!=index}}
-      {{#if reorder_mode==false}}
-        <button onclick="edit({{index}})">{{this}}</button>
+<body>
+
+  <div id="target"></div>
+
+  <script id="template" type="text/ractive">
+  <b>list</b>
+  {{#if edit_mode==false}}
+    {{#each todos}}
+      <div>* {{this}}</div>
+    {{/each}}
+  {{else}}
+    {{#each todos: index}}
+    <div>
+      {{#if editing!=index}}
+        {{#if reorder_mode==false}}
+          <button onclick="edit({{index}})">{{this}}</button>
+        {{else}}
+          <button onclick="up({{index}})">▲</button>
+          <button onclick="down({{index}})">▼</button>
+          {{this}}
+        {{/if}}
       {{else}}
-        <button onclick="up({{index}})">▲</button>
-        <button onclick="down({{index}})">▼</button>
-        {{this}}
+        <form onsubmit="save({{index}}); return false;">    
+          <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item">
+        </form>
       {{/if}}
-    {{else}}
-      <form onsubmit="save({{index}}); return false;">    
-        <input value="{{item_edit}}" id="item_edit" autocomplete="off" placeholder="item">
+    </div>
+    {{/each}}
+    {{#if editing==-1 && reorder_mode==false}}
+      <form onsubmit="add(); return false;">
+        <input value='{{item}}' id="item_add" autocomplete="off" placeholder="add item">
       </form>
     {{/if}}
-  </div>
-  {{/each}}
-  {{#if editing==-1 && reorder_mode==false}}
-    <form onsubmit="add(); return false;">
-      <input value='{{item}}' id="item_add" autocomplete="off" placeholder="add item">
-    </form>
+    {{#if todos.length>1}}
+      <div><button onclick="toggle_reorder_mode()">{{#if reorder_mode}}back{{else}}reorder{{/if}}</button></div>
+    {{/if}}
   {{/if}}
-  {{#if todos.length>1}}
-    <div><button onclick="toggle_reorder_mode()">{{#if reorder_mode}}back{{else}}reorder{{/if}}</button></div>
-  {{/if}}
-{{/if}}
-{{#if !reorder_mode}}<div><button onclick="toggle_edit_mode()">{{#if edit_mode}}back{{else}}edit{{/if}}</button></div>{{/if}}
-</script>
+  {{#if !reorder_mode}}<div><button onclick="toggle_edit_mode()">{{#if edit_mode}}back{{else}}edit{{/if}}</button></div>{{/if}}
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/ractive"></script>
+  <script src="ractive_tutorial.js"></script>
 
-<script>
+  <script src="show-source.js" data-href="ractive_tutorial.html"></script>
+  <script src="show-source.js" data-href="ractive_tutorial.js"></script>
+</body>
 
-var ractive = new Ractive({
-
-  target: '#target',
-
-  template: '#template',
-
-  data: {
-
-    todos: localStorage.todos ? JSON.parse(localStorage.todos) : [],
-
-    editing: -1,
-    edit_mode: true,
-    reorder_mode: false,
-  },
-
-})
-
-function add(){
-  var item = ractive.get('item')
-  if(item.trim()=='') return
-  var todos = ractive.get('todos')
-  todos.push(item)
-  ractive.set('todos', todos)
-  localStorage.todos = JSON.stringify(todos)
-  ractive.set('item', '')
-}
-
-function remove(item){
-  ractive.set('editing', -1)
-  var todos = ractive.get('todos')
-  todos.splice(item, 1)
-  ractive.set('todos', todos)
-  localStorage.todos = JSON.stringify(todos)
-}
-
-function edit(index){
-  ractive.set('item_edit', ractive.get('todos')[index])
-  ractive.set('editing', index)
-  document.querySelector('#item_edit').focus()
-}
-
-function save(index){
-  ractive.set('editing', -1)
-  var item_edit = ractive.get('item_edit')
-  if(item_edit.trim()==''){
-    remove(index)
-    return
-  }
-  var todos = ractive.get('todos')
-  todos[index] = item_edit
-  ractive.set('todos', todos)
-  localStorage.todos = JSON.stringify(todos)
-}
-
-function swap(array, index_a, index_b){
-  var temp = array[index_a]
-  array[index_a] = array[index_b]
-  array[index_b] = temp
-  return array
-}
-
-function up(index){
-  var todos = ractive.get('todos')
-  if(index<=0) return
-  todos = swap(todos, index, index-1)
-  ractive.set('todos', todos)
-  localStorage.todos = JSON.stringify(todos)
-}
-
-function down(index){
-  var todos = ractive.get('todos')
-  if(index>=(todos.length-1)) return
-  todos = swap(todos, index, index+1)
-  ractive.set('todos', todos)
-  localStorage.todos = JSON.stringify(todos)
-}
-
-function toggle_edit_mode(){
-  ractive.set('reorder_mode', false)
-  ractive.set('edit_mode', !ractive.get('edit_mode'))
-}
-
-function toggle_reorder_mode(){
-  ractive.set('editing', -1)
-  ractive.set('reorder_mode', !ractive.get('reorder_mode'))
-}
-
-</script>
+</html>
